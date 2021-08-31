@@ -10,6 +10,11 @@ class Schema {
 		return "{$wpdb->base_prefix}network_themes";
 	}
 
+	public static function get_plugins_table_name() {
+		global $wpdb;
+		return "{$wpdb->base_prefix}network_plugins";
+	}
+
 	public function install_table() {
 		$sql = $this->get_schema();
 
@@ -27,9 +32,9 @@ class Schema {
 
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$table_name = self::get_themes_table_name();
+		$themes_table_name = self::get_themes_table_name();
 
-		$sql[] = "CREATE TABLE {$table_name} (
+		$sql[] = "CREATE TABLE {$themes_table_name} (
 					id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 					site_id bigint(20) NOT NULL,
 					template varchar(200) NOT NULL,
@@ -37,6 +42,16 @@ class Schema {
 					UNIQUE site_id (site_id),
 					KEY template (template),
 					KEY stylesheet (stylesheet)
+				) {$charset_collate};";
+
+		$plugins_table_name = self::get_plugins_table_name();
+
+		$sql[] = "CREATE TABLE {$plugins_table_name} (
+					id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+					site_id bigint(20) NOT NULL,
+					plugin varchar(200) NOT NULL,
+					KEY site_id (site_id),
+					KEY plugin (plugin)
 				) {$charset_collate};";
 
 		return $sql;
