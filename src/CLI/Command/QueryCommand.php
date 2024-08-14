@@ -21,6 +21,19 @@ class QueryCommand extends WP_CLI_Command {
 	 *
 	 * <slug>
 	 * : Plugin or theme slug to query.
+	 *
+	 * [--format=<format>]
+	 * : Render output in a specific format.
+	 * ---
+	 * default: table
+	 * options:
+	 *  - table
+	 *  - csv
+	 *  - json
+	 * ---
+	 *
+	 * [--porcelain]
+	 * : Output in a machine-readable format without extraneous messages.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		list( $type, $slug ) = $args;
@@ -42,8 +55,14 @@ class QueryCommand extends WP_CLI_Command {
 			$sites
 		);
 
-		\WP_CLI\Utils\format_items( 'table', $site_data, [ 'blog_id', 'url', 'name' ] );
+		$format    = $assoc_args['format'] ?? 'table';
+		$porcelain = isset( $assoc_args['porcelain'] );
 
-		\WP_CLI::success( sprintf( 'Found %s sites using %s "%s".', number_format_i18n( count( $sites ) ), $type, $slug ) );
+		\WP_CLI\Utils\format_items( $format, $site_data, [ 'blog_id', 'url', 'name' ] );
+
+		// Display success message only if --porcelain flag is not set
+		if ( ! $porcelain ) {
+			\WP_CLI::success( sprintf( 'Found %s sites using %s "%s".', number_format_i18n( count( $sites ) ), $type, $slug ) );
+		}
 	}
 }
