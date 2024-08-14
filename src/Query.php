@@ -13,7 +13,9 @@ class Query {
 		// Look for values of 'plugin' that start with "$plugin_slug/"
 		$like = $wpdb->esc_like( $plugin_slug ) . '/%';
 
-		$site_ids = $wpdb->get_col( $wpdb->prepare( "SELECT site_id FROM {$table_name} WHERE plugin LIKE %s", $like ) );
+		$php_file_name = $plugin_slug . '.php';
+
+		$site_ids = $wpdb->get_col( $wpdb->prepare( "SELECT site_id FROM {$table_name} WHERE plugin LIKE %s OR plugin = %s OR plugin = %s", $like, $php_file_name, $slug ) );
 
 		return self::get_sites_by_ids( $site_ids );
 	}
