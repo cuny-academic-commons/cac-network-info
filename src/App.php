@@ -39,6 +39,7 @@ class App {
 	protected function set_up_cli_commands() {
 		\WP_CLI::add_command( 'cac-network-info database', '\CAC\NetworkInfo\CLI\Command\DatabaseCommand' );
 		\WP_CLI::add_command( 'cac-network-info sync', '\CAC\NetworkInfo\CLI\Command\SyncCommand' );
+		\WP_CLI::add_command( 'cac-network-info query', '\CAC\NetworkInfo\CLI\Command\QueryCommand' );
 	}
 
 	protected function set_up_hooks() {

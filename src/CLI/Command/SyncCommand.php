@@ -14,6 +14,14 @@ use \WP_Site_Query;
 class SyncCommand extends WP_CLI_Command {
 	/**
 	 * Sync one or more sites.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [<site-id>...]
+	 * : One or more site IDs or URLs to sync.
+	 *
+	 * [--all-sites]
+	 * : Sync all sites.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		if ( ! empty( $assoc_args['all-sites'] ) ) {
@@ -44,6 +52,8 @@ class SyncCommand extends WP_CLI_Command {
 			[
 				'fields' => 'ids',
 				'number' => null,
+				'domain' => '',
+				'path'   => '',
 			]
 		);
 
