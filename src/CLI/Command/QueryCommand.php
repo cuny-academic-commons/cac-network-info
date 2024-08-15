@@ -32,6 +32,12 @@ class QueryCommand extends WP_CLI_Command {
 	 *  - json
 	 * ---
 	 *
+	 * [--fields=<fields>]
+	 * : Limit the output to specific object fields.
+	 * ---
+	 * default: blog_id,url,name
+	 * ---
+	 *
 	 * [--porcelain]
 	 * : Output in a machine-readable format without extraneous messages.
 	 */
@@ -56,9 +62,10 @@ class QueryCommand extends WP_CLI_Command {
 		);
 
 		$format    = $assoc_args['format'] ?? 'table';
+		$fields	   = $assoc_args['fields'] ?? 'blog_id,url,name';
 		$porcelain = isset( $assoc_args['porcelain'] );
 
-		\WP_CLI\Utils\format_items( $format, $site_data, [ 'blog_id', 'url', 'name' ] );
+		\WP_CLI\Utils\format_items( $format, $site_data, explode( ',', $fields ) );
 
 		// Display success message only if --porcelain flag is not set
 		if ( ! $porcelain ) {
